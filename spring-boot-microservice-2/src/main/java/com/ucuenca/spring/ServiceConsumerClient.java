@@ -25,11 +25,11 @@ public class ServiceConsumerClient {
 
         @RequestMapping(path = "/", method = RequestMethod.GET)
         @ResponseBody
-        String HelloWorld();
+        String helloWorld();
     }
 
-    public String HelloWorld() {
-        return theClient.HelloWorld();
+    public String helloWorld() {
+        return theClient.helloWorld();
     }
 
 }

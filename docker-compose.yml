@@ -1,7 +1,8 @@
 version: '3.2'
 services:
-    zoo1:
+    zookeeper:
         image: zookeeper
+        hostname: zookeeper
         restart: always
         volumes:
             - ./zoo1/data:/data
@@ -10,10 +11,11 @@ services:
             - 2181:2181
         environment:
             ZOO_MY_ID: 1
-            ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888
+            ZOO_SERVERS: server.1=zookeeper:2888:3888 server.2=zookeeper-replica:2888:3888
 
-    zoo2:
+    zookeeper-replica:
         image: zookeeper
+        hostname: zookeeper-replica
         restart: always
         volumes:
             - ./zoo2/data:/data
@@ -22,4 +24,29 @@ services:
             - 2182:2181
         environment:
             ZOO_MY_ID: 2
-            ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+            ZOO_SERVERS: server.1=zookeeper:2888:3888 server.2=zookeeper-replica:2888:3888
+
+    microservice:
+        build: ./spring-boot-microservice-1/
+        hostname: microservice
+        ports:
+          - "8080:8080"
+        volumes:
+            - ./ms1/.m2:/root/.m2
+        links:
+          - zookeeper
+        depends_on:
+          - zookeeper
+
+    microservice_2:
+        build: ./spring-boot-microservice-2/
+        hostname: microservice-2
+        ports:
+          - "8180:8080"
+        volumes:
+            - ./ms2/.m2:/root/.m2
+        links:
+          - zookeeper
+          - microservice
+        depends_on:
+          - zookeeper

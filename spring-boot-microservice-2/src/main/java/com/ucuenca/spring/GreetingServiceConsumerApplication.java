@@ -29,7 +29,7 @@ public class GreetingServiceConsumerApplication {
     @GetMapping("/get-greeting")
     public String greeting() {
 
-        return serviceConsumer.HelloWorld();
+        return serviceConsumer.helloWorld();
 
     }
 
