@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+endpoints:
+  restart:
+    enabled: true
+  shutdown:
+    enabled: true
+  health:
+    sensitive: false
+
+logging:
+  level:
+  org.apache.zookeeper.ClientCnxn: WARN
+
+management:
+  security:
+    enabled: false
+
+spring:
+  application:
+    name: GreetingMicroservice
+  cloud:
+    zookeeper:
+      discovery:
+        enabled: true
+      connect-string: localhost:2181
