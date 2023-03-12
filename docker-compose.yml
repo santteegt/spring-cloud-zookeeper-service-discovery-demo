@@ -1,30 +1,35 @@
-version: '3.2'
-services:
-    zookeeper:
-        image: zookeeper
-        hostname: zookeeper
-        restart: always
-        volumes:
-            - ./zoo1/data:/data
-            - ./zoo1/datalog:/datalog
-        ports:
-            - 2181:2181
-        environment:
-            ZOO_MY_ID: 1
-            ZOO_SERVERS: server.1=zookeeper:2888:3888 server.2=zookeeper-replica:2888:3888
+version: '3.1'
 
-    zookeeper-replica:
-        image: zookeeper
-        hostname: zookeeper-replica
-        restart: always
-        volumes:
-            - ./zoo2/data:/data
-            - ./zoo2/datalog:/datalog
-        ports:
-            - 2182:2181
-        environment:
-            ZOO_MY_ID: 2
-            ZOO_SERVERS: server.1=zookeeper:2888:3888 server.2=zookeeper-replica:2888:3888
+services:
+  zoo1:
+    image: zookeeper
+    restart: always
+    hostname: zoo1
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+
+  zoo2:
+    image: zookeeper
+    restart: always
+    hostname: zoo2
+    ports:
+      - 2182:2181
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
+
+  zoo3:
+    image: zookeeper
+    restart: always
+    hostname: zoo3
+    ports:
+      - 2183:2181
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888;2181 server.2=zoo2:2888:3888;2181 server.3=zoo3:2888:3888;2181
 
     microservice:
         build: ./spring-boot-microservice-1/
