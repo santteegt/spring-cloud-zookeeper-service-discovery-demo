@@ -1,4 +1,4 @@
-from maven:3.5.0-jdk-8-alpine
+FROM maven:3.6.1-jdk-8-alpine
 
 MAINTAINER Santiago Gonzalez, <hernangt12re3@gmail.com>
 
